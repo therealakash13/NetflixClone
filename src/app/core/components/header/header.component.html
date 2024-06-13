@@ -1,0 +1,64 @@
+<nav class="relative w-full z-10 bg-slate-900">
+  <div class="flex flex-row">
+    <div class="flex justify-center">
+      <img width="110" class="" src="../../../assets/logo.png" alt="" />
+    </div>
+    <div class="flex flex-row justify-between items-center ml-1 mr-1 w-full">
+      <div class="sm:ml-2 lg:ml-5">
+        <ul class="flex flex-row sm:space-x-4 lg:space-x-12 text-white">
+          <li
+            class="font-semibold hover:underline cursor-pointer hover:text-[#E50914]"
+          >
+            Home
+          </li>
+          <li
+            class="font-semibold hover:underline cursor-pointer hover:text-[#E50914]"
+          >
+            Web Series
+          </li>
+          <li
+            class="font-semibold hover:underline cursor-pointer hover:text-[#E50914]"
+          >
+            Movies
+          </li>
+          <li
+            class="font-semibold hover:underline cursor-pointer hover:text-[#E50914]"
+          >
+            Originals
+          </li>
+          <!-- <li
+            class="font-semibold hover:underline cursor-pointer hover:text-[#E50914]"
+          >
+            Recently Added
+          </li> -->
+          <li
+            class="font-semibold hover:underline cursor-pointer hover:text-[#E50914]"
+          >
+            My List
+          </li>
+        </ul>
+      </div>
+      <div class="flex items-center text-white">
+        <div class="flex items-center">
+          <strong>
+            <span class="inline-block px-4 py-2 text-sm">{{ userName }} </span>
+          </strong>
+
+          <img
+            width="42"
+            class="rounded-full mt-1 mb-1"
+            src="{{ userProfilePhoto }}"
+            alt=""
+          />
+        </div>
+        &nbsp; |
+        <button
+          (click)="signOut()"
+          class="lg:px-4 sm:px-2 font-medium hover:text-[#E50914]"
+        >
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

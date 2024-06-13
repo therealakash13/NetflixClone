@@ -1,15 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { SignoutService } from '../../services/signout.service';
+import { SignoutService } from '../../../shared/services/signout.service';
 import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-header',
   standalone: true,
   imports: [NgClass],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.css',
 })
-export class HomeComponent {
+export class HeaderComponent {
   auth = inject(SignoutService);
   dropdownVisible = false;
 
