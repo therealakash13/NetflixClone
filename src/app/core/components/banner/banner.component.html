@@ -1,21 +1,19 @@
 <iframe
   class="w-full h-full absolute"
-  src="https://www.youtube.com/embed/Dydmpfo68DA?autoplay=1&mute=1&loop=1&controls=0"
+  [src]="videoUrl"
   frameBorder="0"
-  allowFullscreen=""
+  allowFullscreen="allowfullscreen"
 ></iframe>
 
 <div class="h-screen bg-white">
   <div
-    class="lg:pt-[16%] sm:pt-80 px-24 h-full absolute text-white bg-gradient-to-r from-black"
+    class="lg:pt-[25%] lg:pl-[9%] sm:pt-[53%] px-24 h-full absolute text-white bg-gradient-to-r from-black"
   >
-    <h1 class="lg:text-6xl sm:text-4xl font-bold">Animal</h1>
+    <h1 class="lg:text-6xl sm:text-4xl font-bold">{{ bannerTitles }}</h1>
     <p
       class="inline-block py-6 lg:text-xl sm:text-lg lg:w-1/4 sm:w-2/3 flex-wrap"
     >
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Totam
-      exercitationem inventore dolorum earum enim itaque commodi sequi ex quo
-      quia! Architecto nisi consequuntur ea vitae?
+      {{ bannerOverview | description }}
     </p>
     <div class="">
       <button

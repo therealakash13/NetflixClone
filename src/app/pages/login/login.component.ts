@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
       sessionStorage.setItem('LoggedInUser', JSON.stringify(payload));
 
       //redirect to home page
-      this.router.navigate(['/']);
+      this.router.navigate(['/home']);
     }
   }
 }

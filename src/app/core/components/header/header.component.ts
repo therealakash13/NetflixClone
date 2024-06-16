@@ -1,15 +1,17 @@
 import { Component, inject } from '@angular/core';
 import { SignoutService } from '../../../shared/services/signout.service';
 import { NgClass } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
+  route = inject(Router);
   auth = inject(SignoutService);
   dropdownVisible = false;
 
@@ -25,5 +27,6 @@ export class HeaderComponent {
   signOut() {
     sessionStorage.removeItem('LoggedInUser');
     this.auth.signOut();
+    this.route.navigate(['/']);
   }
 }
