@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { ExtraOptions, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { MoviesComponent } from './pages/movies/movies.component';

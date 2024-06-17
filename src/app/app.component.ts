@@ -10,15 +10,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
-  isLoggedIn: WritableSignal<boolean> = signal(false);
+export class AppComponent {}
 
-  ngOnInit(): void {
-    if (sessionStorage.getItem('LoggedInUser')) {
-      this.isLoggedIn.update(() => true);
-      console.log('User is logged in');
-    } else {
-      console.log('User is not logged in');
-    }
-  }
-}
+// still Login Problem resolve and refresh problem too

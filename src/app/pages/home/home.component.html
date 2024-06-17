@@ -1,20 +1,46 @@
-<app-banner
-  [bannerTitles]="(bannerDetail$ | async)?.original_title"
-  [bannerOverview]="(bannerDetail$ | async)?.overview"
-  [videoKey]="(bannerVideo$ | async)?.results[0].key"
-/>
-<app-movie-carousel [videoContent]="movies" [title]="'Popular on NETFLIX'" />
-<app-movie-carousel [videoContent]="tvShows" [title]="'Trending TV Shows'" />
-<app-movie-carousel
-  [videoContent]="nowPlayingMovies"
-  [title]="'Now Playing Movies'"
-/>
-<app-movie-carousel [videoContent]="popularMovies" [title]="'Popular Movies'" />
-<!-- <app-movie-carousel
+<app-header class="z-10 w-full fixed backdrop-blur-md" />
+
+<section id="start">
+  <app-banner
+    [bannerTitles]="title"
+    [bannerOverview]="overView"
+    [bannerImage]="posterPath"
+    [videoKey]="key"
+  />
+</section>
+
+<section id="movies">
+  <app-movie-carousel [videoContent]="movies" [title]="'Popular on NETFLIX'" />
+</section>
+
+<section id="trending">
+  <app-movie-carousel [videoContent]="tvShows" [title]="'Trending TV Shows'" />
+</section>
+
+<section id="nowPlaying">
+  <app-movie-carousel
+    [videoContent]="nowPlayingMovies"
+    [title]="'Now Playing Movies'"
+  />
+</section>
+
+<section id="popular">
+  <app-movie-carousel
+    [videoContent]="popularMovies"
+    [title]="'Popular Movies'"
+  />
+</section>
+
+<!-- <section>
+  <app-movie-carousel
   [videoContent]="topRatedMovies"
   [title]="'Top Rated Movies'"
-/> -->
-<app-movie-carousel
-  [videoContent]="upcomingMovies"
-  [title]="'Upcoming Movies'"
-/>
+  />
+</section> -->
+
+<section id="upcoming">
+  <app-movie-carousel
+    [videoContent]="upcomingMovies"
+    [title]="'Upcoming Movies'"
+  />
+</section>

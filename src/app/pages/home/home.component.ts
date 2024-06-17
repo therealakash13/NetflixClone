@@ -1,11 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, OnInit, inject } from '@angular/core';
 import { HeaderComponent } from '../../core/components/header/header.component';
 import { BannerComponent } from '../../core/components/banner/banner.component';
 import { MoviesService } from '../../shared/services/movies.service';
 import { MovieCarouselComponent } from '../../shared/components/movie-carousel/movie-carousel.component';
 import { MovieContentInterface } from '../../shared/models/movie-content.interface';
-import { Observable, forkJoin, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -19,72 +19,69 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {
-  movieService = inject(MoviesService);
+export class HomeComponent implements OnInit {
+  activeRoute: ActivatedRoute = inject(ActivatedRoute);
+
+  constructor(private movieService: MoviesService) {}
 
   movies: MovieContentInterface[] = [];
   tvShows: MovieContentInterface[] = [];
-  ratedMovies: MovieContentInterface[] = [];
   nowPlayingMovies: MovieContentInterface[] = [];
   popularMovies: MovieContentInterface[] = [];
-  topRatedMovies: MovieContentInterface[] = [];
   upcomingMovies: MovieContentInterface[] = [];
 
-  bannerDetail$ = new Observable<any>();
-  bannerVideo$ = new Observable<any>();
-  key: any = [];
+  title: string = '';
+  overView: string = '';
+  posterPath: string = '';
+  key: string = '';
 
-  sources = [
-    this.movieService.getMovies(),
-    this.movieService.getTvShows(),
-    // this.movieService.getRatedMovies(),
-    this.movieService.getNowPlaying(),
-    this.movieService.getUpcomingMovies(),
-    this.movieService.getPopularMovies(),
-    this.movieService.getTopRatedMovies(),
-  ];
+  // ratedMovies: MovieContentInterface[] = [];
+  // topRatedMovies: MovieContentInterface[] = [];
+
+  fetchData() {
+    this.movieService.getMovies().subscribe((res: any) => {
+      this.movies = res.results;
+
+      this.movieService
+        .getBannerDetail(res.results[0].id)
+        .subscribe((res: any) => {
+          this.title = res.original_title;
+          this.overView = res.overview;
+          this.posterPath = res.poster_path;
+        });
+
+      this.movieService
+        .getBannerVideo(res.results[0].id)
+        .subscribe((res: any) => {
+          this.key = res.results[3].key;
+        });
+    });
+
+    this.movieService.getTvShows().subscribe((res: any) => {
+      this.tvShows = res.results;
+    });
+
+    this.movieService.getNowPlaying().subscribe((res: any) => {
+      this.nowPlayingMovies = res.results;
+    });
+
+    this.movieService.getPopularMovies().subscribe((res: any) => {
+      this.popularMovies = res.results;
+    });
+
+    this.movieService.getUpcomingMovies().subscribe((res: any) => {
+      this.upcomingMovies = res.results;
+    });
+  }
 
   ngOnInit(): void {
-    forkJoin(this.sources)
-      .pipe(
-        map(
-          ([
-            movies,
-            tvShows,
-            ratedMovies,
-            nowPlaying,
-            upcoming,
-            popular,
-            topRated,
-          ]) => {
-            this.bannerDetail$ = this.movieService.getBannerDetail(
-              `${movies.results[0].id}`
-            );
-            this.bannerVideo$ = this.movieService.getBannerVideo(
-              `${movies.results[0].id}`
-            );
+    this.fetchData();
+    this.activeRoute.fragment.subscribe((res: any) => {
+      this.jumpToRoute(res);
+    });
+  }
 
-            return {
-              movies,
-              tvShows,
-              ratedMovies,
-              nowPlaying,
-              upcoming,
-              popular,
-              topRated,
-            };
-          }
-        )
-      )
-      .subscribe((res: any) => {
-        this.movies = res.movies.results as MovieContentInterface[];
-        this.tvShows = res.tvShows.results as MovieContentInterface[];
-        this.ratedMovies = res.ratedMovies.results as MovieContentInterface[];
-        this.nowPlayingMovies = res.nowPlaying
-          .results as MovieContentInterface[];
-        this.upcomingMovies = res.upcoming.results as MovieContentInterface[];
-        this.popularMovies = res.popular.results as MovieContentInterface[];
-        // this.topRatedMovies = res.topRated.results as MovieContentInterface[];
-      });
+  jumpToRoute(section: any) {
+    document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
   }
 }
