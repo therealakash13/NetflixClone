@@ -4,8 +4,10 @@
     <div class="swiper-wrapper">
       <ng-container *ngFor="let movie of videoContent">
         <div
+          id="openModalBtn"
           (mouseenter)="setHoverMovie(movie)"
           (mouseleave)="clearHoverMovie()"
+          (click)="openModal(movie)"
           class="swiper-slide relative"
         >
           <img
@@ -27,8 +29,10 @@
             <div class="py-3 absolute w-[90%] bottom-1">
               <p class="text-xs flex justify-between items-center">
                 <span class="text-green-500"
-                  >Vote Average : {{ movie.vote_average }}</span
+                  >Vote Average :
+                  {{ movie.vote_average | number : "1.0-0" }}</span
                 >
+
                 <i
                   class="fa fa-2x fa-chevron-circle-down"
                   aria-hidden="true"
@@ -39,5 +43,55 @@
         </div>
       </ng-container>
     </div>
+  </div>
+</div>
+
+<div
+  *ngIf="isModalOpen"
+  class="z-20 fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center"
+>
+  <div class="text-neutral-200 bg-[#141414] rounded-lg p-4 h-[90%] w-[90%]">
+    <div class="flex justify-between items-center">
+      <h2 class="sm:text-2xl lg:text-4xl font-bold">
+        {{ temp.original_title ? temp.original_title : temp.original_name }}
+      </h2>
+      <button
+        (click)="closeModal()"
+        class="text-white text-3xl rounded-full hover:text-[#E50914]"
+      >
+        &#x2716;
+      </button>
+    </div>
+    <div class="mt-4">
+      <p>
+        <span class="font-bold sm:text-xl">Overview : </span>{{ temp.overview }}
+      </p>
+    </div>
+
+    <div class="flex flex-row items-center">
+      <span class="font-bold sm:text-xl">Genres :</span>
+      <ul class="flex flex-row m-2 justify-center items-center overflow-auto">
+        <li *ngFor="let genres of genre">
+          <button
+            class="bg-slate-700 rounded-full px-3 py-2 m-1 hover:text-red-500 cursor-auto"
+          >
+            {{ genres }}
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="flex flex-row justify-center space-x-52 items-center">
+      <button (click)="trailerToggler()" class="font-bold sm:text-xl m-2">
+        Watch Trailer
+      </button>
+      <button class="font-bold sm:text-xl m-2">More Info</button>
+    </div>
+    <iframe
+      class="sm:w-[100%] sm:h-[50%]"
+      [src]="videoUrl"
+      frameBorder="0"
+      allowFullscreen="allowfullscreen"
+    ></iframe>
   </div>
 </div>

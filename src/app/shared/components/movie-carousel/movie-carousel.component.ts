@@ -3,14 +3,19 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Inject,
   Input,
   OnInit,
   ViewChild,
+  inject,
 } from '@angular/core';
 import Swiper from 'swiper';
 import { MovieContentInterface } from '../../models/movie-content.interface';
 import { DescriptionPipe } from '../../../pipes/description.pipe';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { GenreDetectorService } from '../../services/genre-detector.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MoviesService } from '../../services/movies.service';
 
 @Component({
   selector: 'app-movie-carousel',
@@ -31,11 +36,20 @@ export class MovieCarouselComponent implements OnInit, AfterViewInit {
   @Input() videoContent: MovieContentInterface[] = [];
   @Input() title!: string;
 
+  constructor(private movieService: MoviesService) {}
+
+  genreDetector = inject(GenreDetectorService);
+  private sanitizer = inject(DomSanitizer);
+
   selectedContent: string | null = null;
+  isModalOpen = false;
+  temp: any;
+  genre: string[] = [];
+  videoUrl!: any;
+  videoKey: any;
 
   @ViewChild('swiperContainer') swiperContainer!: ElementRef;
 
-  constructor() {}
   ngAfterViewInit(): void {
     this.initSwiper();
   }
@@ -81,6 +95,37 @@ export class MovieCarouselComponent implements OnInit, AfterViewInit {
         },
       },
     });
+  }
+
+  sanitization() {
+    this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://www.youtube.com/embed/${this.videoKey}?autoplay=1&mute=0&loop=0&controls=1&rel=0`
+    );
+  }
+
+  fetchMovies() {
+    this.movieService.getBannerVideo(this.temp.id).subscribe((res: any) => {
+      this.videoKey = res.results[0].key;
+    });
+    this.sanitization();
+  }
+
+  trailerToggler() {
+    this.fetchMovies();
+    this.fetchMovies();
+  }
+  openModal(movie: MovieContentInterface) {
+    this.isModalOpen = true;
+    this.temp = movie;
+    console.log(this.temp);
+    this.genre = this.temp.genre_ids.map((id: number) =>
+      this.genreDetector.getGenreNameById(id)
+    );
+    //Design Modal
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
   }
 
   setHoverMovie(movie: MovieContentInterface) {
